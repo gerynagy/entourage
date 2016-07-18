@@ -1,6 +1,28 @@
 #!/usr/bin/python
 #@author Gery Nagy<gergo.nagy@endava.com>
 
+DOCUMENTATION = '''
+---
+module: entourage
+short_description: Adds, removes, overwrites environment variables in bashrc
+'''
+
+EXAMPLES = '''
+- name: Add environment variable
+  entourage:
+    user: myuser
+    key: MY_VARIABLE
+    value: my_value
+    state: present
+
+- name: Remove environment variable
+  entourage:
+    user: my_user
+    key: MY_VARIABLE
+    value: not_used
+    state: absent
+'''
+
 from ansible.module_utils.basic import *
 import re
 
@@ -49,7 +71,7 @@ def entourage_absent(data):
                 return False, True, result
 
     result = {"info": "Variable was absent in bashrc"}
-    return False, True, result
+    return False, False, result
 
 
 def replace_in_file(path, pattern, substitution):
