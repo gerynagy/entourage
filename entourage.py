@@ -29,6 +29,8 @@ import re
 def entourage_present(data):
     bashrc_path = "/home/" + data['user'] + "/.bashrc"
 
+    # (|[ \t]+)\bMY_VARIABLE\b(|[ \t]+)=(|[ \t]+)\bMY_VALUE\b(|[ \t]+)
+    # change current hardcoded values with regex matching
     new_variable_definition = data['key'] + "="
     new_variable = new_variable_definition + data['value'] + "\n"
 
