@@ -1,2 +1,2 @@
-# variator
-Ansible module for adding environment variables to that .bashrc
+# entourage
+Ansible module for adding environment variables to the .bashrc
