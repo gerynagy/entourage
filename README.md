@@ -2,15 +2,19 @@
 
 [![Ansible](https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Ansible_Logo.png/64px-Ansible_Logo.png)](https://www.ansible.com/)
 
+## Version
+#### v1.1
+
 ## Overview
 
-Ansible module for adding, overwriting and/or removing environment variables to/from the .bashrc of a specific user
+Ansible module for adding, overwriting and/or removing environment variables to/from the .bashrc of a specific user.
 
 ## Example
 
 Add environment variable   
 - skips if already exists with same value   
-- overwrites if already exists with other value
+- overwrites if already exists with other value  
+- inserts if doesn't exist
 ```yml
 - name: Add environment variable
   entourage:
@@ -32,10 +36,22 @@ Removes environment variable
     state: absent
 ```
 
+## Changelog
+
+#### v1.1
+- sources the bashrc after altering it
+- added support for root user
+- added proper documentation
+- added GPL3 License header
+
+#### v1.0
+- swapped out hard coded comparison with regex
+- minor code cleanup
+
 ## Technical overview
 
 At first, comparison was strict:  
 MY_VAR=myvalue ---> worked  
 MY_VAR = myvalue ---> didn't work  
 
-Now I swapped out the old mechanism with regex, so every variety and number of spaces or tabs before/between/after them works.
+Swapped out the old mechanism with regex, so every variety and number of spaces or tabs before/between/after keys and values works.
