@@ -22,7 +22,7 @@ short_description: Module through which you can manage environment variables in 
 description:
     - Ansible module for adding, overwriting and/or removing environment variables to/from the C(~/.bashrc).
     - You can specify any user, even root.
-version_added: "1.1"
+version_added: "1.2"
 options:
   user:
     description:

@@ -14,7 +14,8 @@ Ansible module for adding, overwriting and/or removing environment variables to/
 Add environment variable   
 - skips if already exists with same value   
 - overwrites if already exists with other value  
-- inserts if doesn't exist
+- inserts if doesn't exist  
+- if value is not defined, defaults to empty string
 ```yml
 - name: Add environment variable
   entourage:
@@ -36,6 +37,10 @@ Removes environment variable
 ```
 
 ## Changelog
+
+#### v1.2
+- changed value param to optional
+- extended documentation
 
 #### v1.1
 - sources the bashrc after altering it
