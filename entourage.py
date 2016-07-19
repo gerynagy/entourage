@@ -24,7 +24,9 @@ EXAMPLES = '''
 '''
 
 from ansible.module_utils.basic import *
+
 import re
+import subprocess
 
 def entourage_present(data, bashrc_path):
     new_variable_def_regex = "(|[ \\t]+)\\b" + data['key'] + "\\b(|[ \\t]+)=.*"
@@ -48,12 +50,14 @@ def entourage_present(data, bashrc_path):
                 else:
                     # if variable isn't the same, overwrite
                     replace_in_file(bashrc_path, line, new_variable)
+                    subprocess.call('source ' + bashrc_path, shell=True)
                     result = {"info": "Variable was in bashrc", "old_var": line, "new_var": new_variable}
                     return False, False, result
 
     if not present:
         with open(bashrc_path, "a") as bashrc:
             bashrc.write(new_variable)
+    subprocess.call('source ' + bashrc_path, shell=True)
     result = {"info": "Variable inserted into bashrc"}
     return False, True, result
 
@@ -70,6 +74,7 @@ def entourage_absent(data, bashrc_path):
             # if variable defined
             if new_variable_def_pattern.match(line):
                 replace_in_file(bashrc_path, line, "\n")
+                subprocess.call('source ' + bashrc_path, shell=True)
                 num += 1
 
     if num == 1:
@@ -112,7 +117,10 @@ def main():
 
     module = AnsibleModule(argument_spec=fields)
 
-    bashrc_path = "/home/" + module.params['user'] + "/.bashrc"
+    if module.params['user'] == "root":
+        bashrc_path = "/root/.bashrc"
+    else:
+        bashrc_path = "/home/" + module.params['user'] + "/.bashrc"
 
     is_error, has_changed, result = choice_map.get(
             module.params['state'])(module.params, bashrc_path)
