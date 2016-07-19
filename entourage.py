@@ -1,13 +1,58 @@
 #!/usr/bin/python
-#@author Gery Nagy<gergo.nagy@endava.com>
+
+"""
+Ansible module to manage the ssh known_hosts file.
+Copyright(c) 2016, Gergo Nagy <@gerynix>
+
+This module is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This module is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+"""
 
 DOCUMENTATION = '''
 ---
 module: entourage
-short_description: Adds, removes, overwrites environment variables in bashrc
+short_description: Module through which you can manage environment variables in the C(~/.bashrc).
+description:
+    - Ansible module for adding, overwriting and/or removing environment variables to/from the C(~/.bashrc).
+    - You can specify any user, even the root user.
+version_added: "1.1"
+options:
+  user:
+    description:
+      - The user for which you would like to add/overwrite/delete an environment variable to/from the C(~/.bashrc).
+    required: true
+    default: null
+  key:
+    description:
+      - The name of the environment variable to be added/overridden/removed.
+    required: true
+    default: null
+  value:
+    description:
+      - The value of the environment variable to be added.
+    required: true
+    default: null
+  state:
+    description:
+      - I(present) to add an environment variable, I(absent) to remove it.
+    choices: [ "present", "absent" ]
+    required: false
+    default: present
+author: "Gergo Nagy (@gerynix)"
 '''
 
 EXAMPLES = '''
+# Add environment variable
+# - skips if already exists with same value
+# - overwrites if already exists with other value
+# - inserts if doesn't exist
 - name: Add environment variable
   entourage:
     user: myuser
@@ -15,6 +60,9 @@ EXAMPLES = '''
     value: my_value
     state: present
 
+# Removes environment variable
+# - skips if doesn't exist
+# - removes occurrence(s) if one or multiple exists
 - name: Remove environment variable
   entourage:
     user: my_user
@@ -130,6 +178,4 @@ def main():
     else:
         module.fail_json(msg="Error while handling environment variable", meta=result)
 
-
-if __name__ == '__main__':
-    main()
+main()
