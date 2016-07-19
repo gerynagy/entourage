@@ -32,7 +32,6 @@ Removes environment variable
   entourage:
     user: my_user
     key: MY_VARIABLE
-    value: not_used
     state: absent
 ```
 

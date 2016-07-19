@@ -21,24 +21,23 @@ module: entourage
 short_description: Module through which you can manage environment variables in the C(~/.bashrc).
 description:
     - Ansible module for adding, overwriting and/or removing environment variables to/from the C(~/.bashrc).
-    - You can specify any user, even the root user.
+    - You can specify any user, even root.
 version_added: "1.1"
 options:
   user:
     description:
       - The user for which you would like to add/overwrite/delete an environment variable to/from the C(~/.bashrc).
     required: true
-    default: null
   key:
     description:
       - The name of the environment variable to be added/overridden/removed.
     required: true
-    default: null
   value:
     description:
       - The value of the environment variable to be added.
-    required: true
-    default: null
+      - If not specified, value defaults to empty string
+    required: false
+    default: empty_string
   state:
     description:
       - I(present) to add an environment variable, I(absent) to remove it.
@@ -67,7 +66,6 @@ EXAMPLES = '''
   entourage:
     user: my_user
     key: MY_VARIABLE
-    value: not_used
     state: absent
 '''
 
@@ -121,7 +119,7 @@ def entourage_absent(data, bashrc_path):
         for line in bashrc:
             # if variable defined
             if new_variable_def_pattern.match(line):
-                replace_in_file(bashrc_path, line, "\n")
+                replace_in_file(bashrc_path, line, "")
                 subprocess.call('source ' + bashrc_path, shell=True)
                 num += 1
 
@@ -150,7 +148,7 @@ def main():
     fields = {
         "user": {"required": True, "type": "str"},
         "key": {"required": True, "type": "str"},
-        "value": {"required": True, "type": "str"},
+        "value": {"default": "", "type": "str"},
         "state": {
             "default": "present",
             "choices": ['present', 'absent'],
