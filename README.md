@@ -3,7 +3,7 @@
 [![Ansible](https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Ansible_Logo.png/64px-Ansible_Logo.png)](https://www.ansible.com/)
 
 ## Version
-#### v1.1
+#### v1.3
 
 ## Overview
 
