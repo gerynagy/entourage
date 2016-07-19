@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 """
-Ansible module to manage the ssh known_hosts file.
+Ansible module to manage environment variables in the ~/.bashrc.
 Copyright(c) 2016, Gergo Nagy <@gerynix>
 
 This module is free software: you can redistribute it and/or modify
